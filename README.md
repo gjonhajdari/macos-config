@@ -12,16 +12,17 @@ Changes may occur in the future.
 	- [Set up VMBox and Ubuntu](#setting-up-utm-and-ubuntu)
 		- [Themes and libraries](#themes-and-libraries)
 	- [Compiling the Linux Kernel](#compiling-linux-kernel)
+		- [Create new system call](#create-new-system-call)
 
 
 ## Homebrew instalation
 1. install Xcode command line tools with
-```
+```bash
 $ xcode-select --install
 ```
 
 2. Install home brew with the following command
-```
+```bash
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 - Install packages use `brew install --cask / --formula [package-name]`
@@ -37,26 +38,26 @@ $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
 
 ### Apps to install with Homebrew
 Download all apps with the following command
-```
+```bash
 $ brew install --cask git wget iterm2 visual-studio-code google-chrome figma slack raycast github microsoft-word
 ```
 
 
 ## iTerm 2 Configuration
 1. Install using Homebrew (if not already installed)
-```	
+```	bash
 $ brew install --cask iterm2
 ```
 
 2. Install Oh My ZSH
-```
+```bash
 $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 3. Download custom fonts [here](https://github.com/Falkor/dotfiles/blob/master/fonts/SourceCodePro%2BPowerline%2BAwesome%2BRegular.ttf) and put them in font book **[OPTIONAL]**
 
 4. Download powerlevel10k
-```
+```bash
 $ git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 ```
 
@@ -64,7 +65,7 @@ $ git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powe
 	- Download scheme `git clone https://github.com/dracula/iterm.git`
 	- iTerm2 > Preferences > Profiles > Colors
 	- Color presets > import... and choose Dracula.itermcolors
-	- Go to Text > Font and choose SourceCodePro
+	- Go to Text > Font and choose SourceCodePro **[OPTIONAL]**
 
 
 6. Set theme on *.zshrc* `ZSH_THEME="powerlevel10k/powerlevel10k"`, open iTerm 2 and follow the configuration steps
@@ -77,12 +78,12 @@ $ git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powe
 
 ## JavaFX Development Environment
 1. Download JDK via homebrew or from [this link](https://www.oracle.com/cis/java/technologies/downloads/#jdk19-mac) (current version 19.0.2)
-```
+```bash
 $ brew install --cask oracle-jdk
 ```
 
 2. Download IntelliJ IDEA via homebrew or from  [this link](https://www.jetbrains.com/idea/download/#section=mac)
-```
+```bash
 $ brew install --cask intellij-idea
 ```
 
@@ -111,21 +112,21 @@ $ brew install --cask intellij-idea
 4. Right click VM profile > Edit > Drives and delete ISO image
 
 5. Start VM again and install Ubuntu Desktop
-```
+```bash
 $ sudo apt install tasksel
 $ sudo tasksel install ubuntu-desktop
 $ sudo reboot
 ```
 
 6. Enable Directory Sharing
-```
+```bash
 $ sudo apt install spice-vdagent spice-webdavd
 ```
 
 #### Themes and libraries
 
 1. Use Dracula theme for terminal **[OPTIONAL]**
-```
+```bash
 $ sudo apt-get install dconf-cli
 
 $ git clone https://github.com/dracula/gnome-terminal
@@ -135,58 +136,143 @@ $ ./install.sh
 ```
 
 2. Libraries to install
-```
+```bash
 $ sudo apt install gcc
 ```
 
 ### Compiling Linux Kernel
 1. Install the latest kernel version [here](https://www.kernel.org) or with command
-```
+```bash
 $ wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-[version].tar.xz
 ```
 
 3. Extract files from kernel zip
-```
+```bash
 $ tar xvf linux-[version].tar.xz
 ```
 
 3. Install requierments
-```
+```bash
 $ sudo apt-get install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison
 ```
 
 4. Copy the configuration file
-```
+```bash
 $ cd linux-[version]
 $ cp -v /boot/config-$(uname -r) .config
 ```
 
 
 5. Disable the security certificates
-```
+```bash
 $ scripts/config --disable SYSTEM_TRUSTED_KEYS
 $ scripts/config --disable SYSTEM_REVOCATION_KEYS
 ```
 
 7. Save config and build
-```
+```bash
 $ make menuconfig
 $ make -j 4
 ```
 
 7. Install modules and finally install the kernel
-```
+```bash
 $ sudo make modules_install
 $ sudo make install
 ```
 
 8. Update the bootloader **[OPTIONAL]**
-```
+```bash
 $ sudo update-initramfs -c -k 6.0.7
 $ sudo update-grub
 ```
 
 9. Reboot and verify version
-```
+```bash
 $ uname -mrs
+```
+
+#### Create new system call
+1. Switch user to root, go to linux folder and create a new folder containing the C file
+```bash
+$ su
+$ cd /usr/src/linux-[version]/
+$ mkdir hello
+$ cd hello
+$ vim hello.c
+```
+
+2. Paste the following code
+```c
+#include <linux/kernel.h>
+
+asmlinkage long sys_hello(void)
+{
+	printk("Hello world!\n");
+	return 0;
+}
+```
+
+3. Create a file named *Makefile* which contains `obj-y := hello.o`
+
+4. Go back to the linux directory, open *Makefile* and add your file name at the end of this line
+```makefile
+core-y += kernel/ mm/ fs/ ipc/ security/ crypto/ block/ [filename]/
+```
+
+5. Go to the system calls table directory and add your function to the *syscall_64.tbl* file
+```bash
+$ cd /usr/src/linux[version]/arch/x86/entry/syscalls
+$ vim syscall_65.tbl
+
+# Ending line should look like this
+   547	   			x32					pwritev2		x32_compat_sys_pwritev64v2
+-> [next number]	[architecture]		[directory]		[function]
+```
+
+6. Add new system call at the end of the system calls heaader file
+```c
+$ cd /usr/src/linux[version]/include/linux
+$ vim syscalls.h
+
+asmlinkage long sys_helo(void);
+#endif
+```
+
+7. Recompile, update the kernel and reboot the system
+```bash
+$ cd /usr/src/linux[version]
+$ make bzimage -j 4
+
+$ make modules_install
+$ sudo make install
+
+$ reboot
+```
+
+8. Create a new program and use the system call
+```c
+$ vim test.c
+
+#include <stdio.h>
+#include <linux/kernel.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+
+int main()
+{
+	long int test = syscall(548); // ID of system call (sys_hello)
+	printf("The system call returns: %ld\n", test);
+	return 0;
+}
+```
+
+9. Compile and show the message sent by the kernel
+```bash
+$ gcc -o test test.c
+$ ./test
+-> The system call returns: 0
+
+$ dmseg
+-> [ value] Hello World!
 ```
