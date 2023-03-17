@@ -226,8 +226,8 @@ $ cd /usr/src/linux[version]/arch/x86/entry/syscalls
 $ vim syscall_65.tbl
 
 # Ending line should look like this
-   547	   			x32					pwritev2		x32_compat_sys_pwritev64v2
--> [next number]	[architecture]		[directory]		[function]
+   547	   x32		pwritev2	x32_compat_sys_pwritev64v2
+-> 548		64		hello		sys_hello
 ```
 
 6. Add new system call at the end of the system calls heaader file
