@@ -39,7 +39,7 @@ $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
 ### Apps to install with Homebrew
 Download all apps with the following command
 ```bash
-$ brew install --cask git wget iterm2 visual-studio-code google-chrome figma slack raycast github microsoft-word
+$ brew install --cask git wget iterm2 visual-studio-code google-chrome figma slack raycast github microsoft-word latest rocket mission-control-plus middle appcleaner maccy hiddenbar
 ```
 
 
