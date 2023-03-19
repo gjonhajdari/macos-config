@@ -1,14 +1,16 @@
 # macos-config
 Configuration for personal and University development environment for Mac.
 
-Last updated on: *17/03/2023*.
+Last updated on: *19/03/2023*.
 Changes may occur in the future.
 
 ## Table of contents
 1. [Homebrew Instalation](#homebrew-instalation)
+	- [Available commands](#homebrew-available-commands)
 	- [Apps to install with Homwbrew](#apps-to-install-with-homebrew)
 2. [iTerm 2 Configuration](#iterm-2-configuration)
-3. [Linux Configuration](#homebrew-instalation)
+3. [JavaFX Development Environment](#javafx-development-environment)
+4. [Linux Configuration](#linux-configuration)
 	- [Set up VMBox and Ubuntu](#setting-up-utm-and-ubuntu)
 		- [Themes and libraries](#themes-and-libraries)
 	- [Compiling the Linux Kernel](#compiling-linux-kernel)
@@ -16,19 +18,22 @@ Changes may occur in the future.
 
 
 ## Homebrew instalation
-1. install Xcode command line tools with
-```bash
-$ xcode-select --install
-```
-
-2. Install home brew with the following command
+1. Install Homebrew with the following command
 ```bash
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
+
+2. Add Homebrew to PATH
+```bash
+$ echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+$ eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
+### Available commands
 - Install packages use `brew install --cask / --formula [package-name]`
 - Uninstall packages with `brew uninstall [package-name]`
 - Uninstall while ignoring dependencies with `brew uninstall --ignore-dependencies [package-name]`
-- Update homebrew with `brew update`
+- Update Homebrew with `brew update`
 - Find out what packages need updates with `brew outdated`
 - Update installed packages with `brew upgrade`
 - Update singlular package with `brew install [formula-name] && brew cleanup [formula-name]`
@@ -39,7 +44,7 @@ $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
 ### Apps to install with Homebrew
 Download all apps with the following command
 ```bash
-$ brew install --cask git wget iterm2 visual-studio-code google-chrome figma slack raycast github microsoft-word latest rocket mission-control-plus middle appcleaner maccy hiddenbar
+$ brew install --cask git wget python iterm2 visual-studio-code google-chrome figma slack github microsoft-word latest rocket mission-control-plus middle appcleaner maccy hiddenbar
 ```
 
 
@@ -77,12 +82,12 @@ $ git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powe
 	- Add this to the json file `"terminal.integrated.fontFamily": "MesloLGS NF",`
 
 ## JavaFX Development Environment
-1. Download JDK via homebrew or from [this link](https://www.oracle.com/cis/java/technologies/downloads/#jdk19-mac) (current version 19.0.2)
+1. Download JDK via Homebrew or from [this link](https://www.oracle.com/cis/java/technologies/downloads/#jdk19-mac) (current version 19.0.2)
 ```bash
 $ brew install --cask oracle-jdk
 ```
 
-2. Download IntelliJ IDEA via homebrew or from  [this link](https://www.jetbrains.com/idea/download/#section=mac)
+2. Download IntelliJ IDEA via Homebrew or from  [this link](https://www.jetbrains.com/idea/download/#section=mac)
 ```bash
 $ brew install --cask intellij-idea
 ```
@@ -100,28 +105,25 @@ $ brew install --cask intellij-idea
 ### Setting up UTM and Ubuntu
 1. Download the software
 	- UTM via the App Store or from [this link](https://mac.getutm.app/)
-	- Ubuntu Server for ARM [here](https://ubuntu.com/download/server/arm)
+	- Ubuntu Dekstop for ARM [here](https://cdimage.ubuntu.com/jammy/daily-live/current/)
 
 2. Create a new virtual machine
 	- Create > Virtualize > Linux > Browse and choose iso image
 	- VM Specs: 4GB RAM, 4 CPU cores, 80 GB storage
-	<!-- - Enable directory share with Downloads folder **[OPTIONAL]** -->
+	- Enable OpenGL hardware acceleration and Downloads shared directory
+	- Right click VM > Settings > Display and enable Retina Mode
 
-3. Start VM, follow instalation steps and reboot
+3. Start VM, log in with *ubuntu*, follow instalation steps and power off
 
-4. Right click VM profile > Edit > Drives and delete ISO image
+4. Click on Drive image options at the rop right and eject the ISO image
 
-5. Start VM again and install Ubuntu Desktop
-```bash
-$ sudo apt install tasksel
-$ sudo tasksel install ubuntu-desktop
-$ sudo reboot
-```
-
-6. Enable Directory Sharing
+5. Start VM again and install support for VM guest additions and reboot
 ```bash
 $ sudo apt install spice-vdagent spice-webdavd
+$ reboot
 ```
+
+To view files on shared directory go to https://localhost:9843.
 
 #### Themes and libraries
 
