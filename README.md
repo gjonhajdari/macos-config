@@ -1,7 +1,7 @@
 # macos-config
 Configuration for personal and University development environment for Mac.
 
-Last updated on: *19/03/2023*.
+Last updated on: *30/04/2023*.
 Changes may occur in the future.
 
 ## Table of contents
@@ -98,7 +98,10 @@ $ brew install --cask intellij-idea
 	- Create subpackages with classes as you go
 	- Edit src > main > java module-info.java and add `exports Ushtrimet_KNK.[subpackage] to javafx.graphics;`
 
-
+4. Download SceneBuilder via Homebew or [this link](https://gluonhq.com/products/scene-builder/#download)
+```bash
+$ brew install --cask scenebuilder
+```
 
 ## Linux Configuration
 
