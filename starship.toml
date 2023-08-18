@@ -1,0 +1,142 @@
+format = '''
+$os ❯ $directory $git_branch$python$java$nodejs$fill$cmd_duration$time
+$character
+'''
+
+[fill]
+symbol = ' '
+
+[time]
+disabled = false
+style = "white regular"
+format = "[$time]($style) "
+time_format = '%R'
+
+[cmd_duration]
+format = "took [$duration](red bold) / "
+min_time = 100
+
+[os]
+format = "[$symbol]($style)"
+style = "fg:#ab8cf5"
+disabled = false
+
+[os.symbols]
+Macos = ""
+
+[git_branch]
+style = 'red bold'
+format = "[$symbol$branch(:$remote_branch)]($style) "
+truncation_length = 4
+truncation_symbol = ''
+
+[username]
+style_user = "fg:#ab8cf5 bold"
+style_root = "red bold"
+format = '[chon]($style)'
+show_always = true
+
+[directory]
+read_only = " "
+style = 'cyan bold italic'
+format = '[$path]($style)'
+truncate_to_repo = false
+
+# [package]
+# symbol = ""
+# format = 'via [$symbol $version](208 bold)'
+
+# Replace the '❯' symbol in the prompt with '➜'
+[character] # The name of the module we are configuring is 'character'
+success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+error_symbol = '[✗](bold red)'
+
+[python]
+symbol = " "
+format = 'via [${symbol}${version}]($style)'
+style = "bold yellow"
+python_binary = 'python3'
+
+[java]
+symbol = " "
+format = 'via [${symbol}${version}]($style)'
+style = "bold red"
+
+[nodejs]
+symbol = " "
+format = 'via [${symbol}${version}]($style)'
+style = "bold green"
+
+[c]
+symbol = " "
+format = 'via [${symbol}${version}]($style)'
+style = "bold cyan"
+
+[aws]
+symbol = "  "
+
+[buf]
+symbol = " "
+
+[conda]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[docker_context]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[rlang]
+symbol = "ﳒ "
+
+[ruby]
+symbol = " "
+
+[rust]
+symbol = " "
+
+[scala]
+symbol = " "
+
+[spack]
+symbol = "🅢 "
+
+[golang]
+symbol = " "
+
+[guix_shell]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[haxe]
+symbol = "⌘ "
+
+[hg_branch]
+symbol = " "
+
+[hostname]
+ssh_symbol = " "
+
+[julia]
+symbol = " "
+
+[lua]
+symbol = " "
+
+[meson]
+symbol = "喝 "
+
+[nim]
+symbol = " "
+
+[nix_shell]
+symbol = " "
